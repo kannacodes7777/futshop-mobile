@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:futshop/left_drawer.dart'; 
+import 'package:futshop/product_form.dart'; 
 
 // Class ItemHomepage diperbarui untuk menyimpan warna
 class ItemHomepage {
@@ -31,7 +33,11 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        // Tambahkan leading icon agar drawer terlihat
+        iconTheme: const IconThemeData(color: Colors.white), 
       ),
+      // Tambahkan drawer di sini
+      drawer: const LeftDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -87,10 +93,19 @@ class ItemCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: () {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-                SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!")));
+          if (item.name == "Create Product") {
+            // Navigasi ke halaman form
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProductFormPage()),
+            );
+          } else {
+            // Tampilkan SnackBar untuk item lainnya
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                  SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!")));
+          }
         },
         child: Container(
           padding: const EdgeInsets.all(8),
