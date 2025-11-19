@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:futshop/left_drawer.dart'; 
-import 'package:futshop/product_form.dart'; 
+import 'package:futshop/widget/left_drawer.dart'; 
+import 'package:futshop/screens/product_form.dart'; 
+import 'package:futshop/screens/list_product.dart';
 
-// Class ItemHomepage diperbarui untuk menyimpan warna
 class ItemHomepage {
   final String name;
   final IconData icon;
@@ -24,7 +24,6 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Judul diperbarui
         title: const Text(
           'FutShop',
           style: TextStyle(
@@ -33,23 +32,18 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        // Tambahkan leading icon agar drawer terlihat
         iconTheme: const IconThemeData(color: Colors.white), 
       ),
-      // Tambahkan drawer di sini
       drawer: const LeftDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Memberikan jarak vertikal
             const SizedBox(height: 16.0),
-
             Center(
               child: Column(
                 children: [
-                  // Teks sambutan diperbarui
                   const Padding(
                     padding: EdgeInsets.only(top: 16.0),
                     child: Text(
@@ -94,13 +88,20 @@ class ItemCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           if (item.name == "Create Product") {
-            // Navigasi ke halaman form
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const ProductFormPage()),
             );
-          } else {
-            // Tampilkan SnackBar untuk item lainnya
+          } 
+          else if (item.name == "All Products") {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const ProductListPage(filterByUser: false)));
+          }
+          else if (item.name == "My Products") {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const ProductListPage(filterByUser: true)));
+          }
+          else {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
@@ -127,35 +128,6 @@ class ItemCard extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-
-class InfoCard extends StatelessWidget {
-  final String title;
-  final String content;
-
-  const InfoCard({super.key, required this.title, required this.content});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 2.0,
-      child: Container(
-        width: MediaQuery.of(context).size.width / 3.5,
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8.0),
-            Text(content),
-          ],
         ),
       ),
     );
